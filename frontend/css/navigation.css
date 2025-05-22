@@ -1,0 +1,195 @@
+/* navigation.css - Standardized navigation styles for all pages */
+
+/* Root variables - add to existing root variables */
+:root {
+    --navbar-height: 64px;
+    --navbar-bg: rgba(255, 255, 255, 0.98);
+    --transition-speed: 0.3s;
+}
+
+/* Navigation Base Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--navbar-height);
+    background-color: var(--navbar-bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.nav-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo Styles */
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.nav-logo:hover {
+    color: var(--primary-dark);
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Navigation Buttons */
+.nav-links .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    text-decoration: none;
+}
+
+.nav-links .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.nav-links .btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.nav-links .btn-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    margin-left: 0.5rem;
+}
+
+.nav-links .btn-secondary:hover {
+    background-color: var(--gray-50);
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--gray-900);
+    transition: color var(--transition-speed);
+}
+
+#theme-icon {
+    font-size: 1.25rem;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-btn span {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background-color: var(--gray-900);
+    transition: background-color var(--transition-speed);
+}
+
+/* Dark Mode Styles */
+.dark-mode .navbar {
+    background-color: var(--bg-primary, #1a202c);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .nav-logo {
+    color: var(--primary-light);
+}
+
+.dark-mode .nav-link {
+    color: var(--text-secondary, #a0aec0);
+}
+
+.dark-mode .nav-link:hover {
+    color: var(--primary-light);
+}
+
+.dark-mode .nav-links .btn-secondary {
+    background-color: transparent;
+    color: var(--text-primary, #f7fafc);
+    border-color: var(--primary-light);
+}
+
+.dark-mode #theme-toggle {
+    color: var(--text-primary, #f7fafc);
+}
+
+.dark-mode .mobile-menu-btn span {
+    background-color: var(--text-primary, #f7fafc);
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: var(--navbar-height);
+        left: 0;
+        right: 0;
+        background-color: var(--navbar-bg);
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color var(--transition-speed);
+    }
+
+    .dark-mode .nav-links {
+        background-color: var(--bg-primary, #1a202c);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+@media (min-width: 768px) {
+    .nav-links {
+        display: flex;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+    }
+}
