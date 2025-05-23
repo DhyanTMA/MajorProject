@@ -6,10 +6,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🔗 MongoDB Connection
-const uri = "mongodb+srv://dhyanmarasinghe:dt240108001100@cluster0.090nnbi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb://localhost:27017/users"; // Ensure 'users' matches your database name
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("✅ Connected to MongoDB"))
+mongoose.connect(uri)
+    .then(() => console.log("✅ Connected to Local MongoDB"))
     .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Middleware for JSON data handling
@@ -18,19 +18,24 @@ app.use(express.json());
 // Serve static files from the "frontend" folder
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Universal route handler for all HTML files
-app.get('/:page', (req, res) => {
-    const page = req.params.page;
-    const filePath = path.join(__dirname, '../frontend/html', page);
-
-    if (path.extname(page) === '.html') {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Page not found');
-    }
+// **Serve Homepage Automatically**
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
 });
 
-// 🚀 **Start Express Server**
+// **Serve Other HTML Files**
+app.get('/:page', (req, res) => {
+    const page = req.params.page;
+    
+    if (!page.endsWith('.html')) {
+        return res.status(404).send('Page not found');
+    }
+
+    const filePath = path.join(__dirname, '../frontend/html', page);
+    res.sendFile(filePath);
+});
+
+// 🚀 Start Express Server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
