@@ -29,59 +29,9 @@ styleSheet.textContent = `
         border-radius: 0.375rem;
         font-size: 0.875rem;
     }
-    .dark-mode {
-        --bg-color: #1a202c;
-        --text-color: #f7fafc;
-    }
-    .light-mode {
-        --bg-color: #ffffff;
-        --text-color: #1a202c;
-    }
 `;
 document.head.appendChild(styleSheet);
 
-// Theme Management
-function initializeTheme() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    
-    if (!themeToggle || !themeIcon) {
-        console.warn('Theme elements not found');
-        return;
-    }
-
-    // Set initial theme
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.classList.add(`${savedTheme}-mode`);
-    updateThemeIcon(savedTheme === 'dark');
-
-    // Handle theme toggle
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.add('theme-transitioning');
-        const isDarkMode = document.body.classList.toggle('dark-mode');
-        document.body.classList.toggle('light-mode', !isDarkMode);
-        
-        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-        updateThemeIcon(isDarkMode);
-
-        setTimeout(() => {
-            document.body.classList.remove('theme-transitioning');
-        }, 300);
-    });
-}
-
-function updateThemeIcon(isDarkMode) {
-    const themeIcon = document.getElementById('theme-icon');
-    if (!themeIcon) return;
-
-    if (isDarkMode) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    }
-}
 
 // Mobile Menu Management
 function initializeMobileMenu() {
@@ -320,7 +270,6 @@ function showSuccess(message) {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
-    initializeTheme();
     initializeMobileMenu();
     initializeForm();
     initializeModals();

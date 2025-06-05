@@ -30,7 +30,6 @@ body {
     padding: 0 2rem;
 }
 
-/* Button Styles */
 .btn {
     display: inline-block;
     padding: 0.75rem 1.5rem;
@@ -71,8 +70,6 @@ body {
 .btn-light:hover {
     background-color: var(--gray-50);
 }
-
-/* Navigation */
 
 .navbar {
     position: fixed;
@@ -123,7 +120,6 @@ body {
     color: var(--primary-color);
 }
 
-/* Specific styling for the navigation button */
 .nav-links .btn {
     padding: 0.5rem 1.25rem;
     margin-left: 0.5rem;
@@ -145,7 +141,6 @@ body {
     transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-/* Hero Section */
 .hero {
     padding-top: 2.5rem;
     background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
@@ -196,7 +191,6 @@ body {
     box-shadow: none;
 }
 
-/* Features Section */
 .features {
     padding: 5rem 0;
     background-color: white;
@@ -266,7 +260,6 @@ body {
     color: var(--gray-600);
 }
 
-/* CTA Section */
 .cta-wrapper {
     background-color: #1e40af;
     color: white;
@@ -330,7 +323,7 @@ body {
 .cta-text-inner {
     position: relative;
     max-width: 500px;
-    z-index: 3; /* Keep text above overlay */
+    z-index: 3; 
 }
 
 .cta-text-inner h2 {
@@ -395,7 +388,6 @@ body {
     }
 }
 
-/* Mobile styles */
 @media (max-width: 768px) {
     .content-wrapper {
         flex-direction: column;
@@ -424,7 +416,6 @@ body {
     }
 }
 
-/* Responsive Design */
 @media (min-width: 768px) {
     .nav-links {
         display: flex;
@@ -455,7 +446,6 @@ body {
     }
 }
 
-/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -471,7 +461,6 @@ body {
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* Pricing Section */
 .pricing {
     padding: 5rem 0;
     background-color: white;
@@ -535,7 +524,6 @@ a.btn {
     text-decoration: none;
 }
 
-/* Remove underline from all navigation links and buttons */
 a.nav-link,
 a.btn {
     text-decoration: none;
@@ -547,163 +535,10 @@ a.btn {
     align-items: center;
 }
 
-/* Icon styles */
-.icon-moon::before {
-    content: "\1F319"; /* Moon icon */
-}
-
-.icon-sun::before {
-    content: "\2600"; /* Sun icon */
-}
-
-#theme-icon {
-    font-size: 1.25rem;
-    display: inline-block;
-    vertical-align: middle;
-    color: var(--gray-900); 
-}
-
-#theme-toggle {
-    margin-left: 1rem;
-    border: none;
-}
-
-.light-mode {
-    --bg-color: var(--gray-50);
-    --text-color: var(--gray-900);
-    --navbar-bg: rgba(255, 255, 255, 0.98);
-    --btn-bg: var(--primary-color);
-    --btn-text: white;
-    --btn-secondary-bg: white;
-    --btn-secondary-text: var(--primary-color);
-}
-
-.dark-mode {
-    --bg-primary: #1a202c;
-    --bg-secondary: #2d3748;
-    --text-primary: #f7fafc;
-    --text-secondary: #a0aec0;
-    --navbar-bg: #1a202c;  
-}
-
-.dark-mode .navbar {
-    background-color: var(--bg-primary);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Add these navbar-specific dark mode styles */
-.dark-mode .nav-logo {
-    color: var(--primary-light);
-}
-
-.dark-mode .nav-link {
-    color: var(--text-secondary);
-}
-
-.dark-mode .nav-link:hover {
-    color: var(--primary-light);
-}
-
-.dark-mode .mobile-menu-btn span {
-    background-color: var(--text-primary);
-}
-
-/* Add transition for nav elements */
 .nav-logo, .nav-link {
     transition: color var(--transition-speed);
 }
 
-body.light-mode, body.dark-mode {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-body.light-mode #theme-icon {
-    color: var(--gray-900);
-}
-
-body.dark-mode #theme-icon {
-    color: var(--gray-50);
-}
-
-.dark-mode .hero {
-    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-}
-
-.dark-mode .hero-text h1 {
-    color: var(--text-primary);
-}
-
-.dark-mode .hero-text p {
-    color: var(--text-secondary);
-}
-
-.dark-mode .features {
-    background-color: var(--bg-primary);
-}
-
-.dark-mode .feature-card {
-    background-color: var(--bg-secondary);
-    transition: transform 0.2s ease, background-color var(--transition-speed);
-}
-
-.dark-mode .feature-card h3 {
-    color: var(--text-primary);
-}
-
-.dark-mode .feature-card p {
-    color: var(--text-secondary);
-}
-
-.dark-mode .feature-icon {
-    background-color: #3182ce;
-}
-
-.dark-mode .icon {
-    stroke: var(--text-primary);
-}
-
-.dark-mode .section-header h2 {
-    color: var(--text-primary);
-}
-
-.dark-mode .section-header p {
-    color: var(--text-secondary);
-}
-
-.dark-mode .pricing {
-    background-color: var(--bg-primary);
-}
-
-.dark-mode .pricing-card {
-    background-color: var(--bg-secondary);
-    transition: transform 0.2s ease, background-color var(--transition-speed);
-}
-
-.dark-mode .pricing-card h3 {
-    color: var(--text-primary);
-}
-
-.dark-mode .pricing-card .price {
-    color: var(--primary-light);
-}
-
-.dark-mode .pricing-card ul li {
-    color: var(--text-secondary);
-}
-
-.dark-mode .btn-secondary {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border-color: var(--primary-light);
-}
-
-.dark-mode .btn-light {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-}
-
-/* Smooth transitions for all interactive elements */
 .nav-link, .btn, .feature-card, .pricing-card {
     transition: all var(--transition-speed) ease;
 }

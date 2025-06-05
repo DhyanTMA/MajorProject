@@ -6,7 +6,6 @@
     transition: background-color var(--transition-speed);
 }
 
-/* Dashboard Header */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -33,7 +32,6 @@
     gap: 1rem;
 }
 
-/* Stats Grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -115,14 +113,12 @@
     color: var(--gray-600);
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 1.5rem;
 }
 
-/* Dashboard Cards */
 .dashboard-card {
     background-color: white;
     padding: 1.5rem;
@@ -163,7 +159,6 @@
     color: var(--primary-dark);
 }
 
-/* Transactions List */
 .transactions-list {
     display: flex;
     flex-direction: column;
@@ -231,7 +226,6 @@
     color: #ef4444;
 }
 
-/* Quick Actions */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -265,7 +259,6 @@
     font-size: 1.25rem;
 }
 
-/* Category List */
 .category-list {
     display: flex;
     flex-direction: column;
@@ -311,7 +304,6 @@
     border-radius: 0.25rem;
 }
 
-/* Bills List */
 .bills-list {
     display: flex;
     flex-direction: column;
@@ -351,107 +343,6 @@
     color: var(--gray-900);
 }
 
-/* Dark Mode Styles */
-.dark-mode .dashboard-main {
-    background-color: var(--bg-primary, #1a202c);
-}
-
-.dark-mode .header-content h1 {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .header-content p {
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .stat-card,
-.dark-mode .dashboard-card {
-    background-color: var(--bg-secondary, #2d3748);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.dark-mode .stat-card:hover,
-.dark-mode .dashboard-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.dark-mode .stat-content h3 {
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .stat-value {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .card-header {
-    border-bottom-color: var(--gray-600, #4a5568);
-}
-
-.dark-mode .card-header h3 {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .card-link {
-    color: var(--primary-light, #60a5fa);
-}
-
-.dark-mode .transaction-item:hover {
-    background-color: var(--bg-primary, #1a202c);
-}
-
-.dark-mode .transaction-details h4 {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .transaction-details p {
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .action-btn {
-    background-color: var(--bg-primary, #1a202c);
-    border-color: var(--gray-600, #4a5568);
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .action-btn:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.dark-mode .category-name {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .category-amount {
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .category-percentage {
-    background-color: var(--bg-primary, #1a202c);
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .bill-item {
-    background-color: var(--bg-primary, #1a202c);
-}
-
-.dark-mode .bill-item:hover {
-    background-color: var(--gray-600, #4a5568);
-}
-
-.dark-mode .bill-info h4 {
-    color: var(--text-primary, #f7fafc);
-}
-
-.dark-mode .bill-info p {
-    color: var(--text-secondary, #a0aec0);
-}
-
-.dark-mode .bill-amount {
-    color: var(--text-primary, #f7fafc);
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-header {
         flex-direction: column;

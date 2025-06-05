@@ -53,15 +53,6 @@ body {
     border: 2px solid var(--primary-color);
 }
 
-#theme-toggle {
-    background: none;
-    border: none;
-    color: var(--gray-900);
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-/* Login Container Styles */
 .page-container {
     min-height: calc(100vh - var(--header-height));
     display: flex;
@@ -181,7 +172,6 @@ body {
     text-decoration: underline;
 }
 
-/* Mobile Menu */
 .mobile-menu-btn {
     display: none;
     flex-direction: column;
@@ -226,36 +216,4 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Dark Mode Styles */
-.dark-mode {
-    background: #1a202c;
-}
-
-.dark-mode .navbar {
-    background-color: #1a202c;
-}
-
-.dark-mode .login-container {
-    background: #2d3748;
-}
-
-.dark-mode .login-header h1 {
-    color: white;
-}
-
-.dark-mode .login-header p,
-.dark-mode .remember-me {
-    color: #a0aec0;
-}
-
-.dark-mode .form-input {
-    background: #2d3748;
-    border-color: #4a5568;
-    color: white;
-}
-
-.dark-mode .form-group i {
-    color: #a0aec0;
 }
