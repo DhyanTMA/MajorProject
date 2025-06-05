@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 🔗 MongoDB Connection
-const uri = "mongodb://localhost:27017/users"; // Ensure 'users' matches your database name
+// MongoDB Connection
+const uri = "mongodb://localhost:27017/Accounts"; 
 
 mongoose.connect(uri)
     .then(() => console.log("✅ Connected to Local MongoDB"))
@@ -14,6 +14,13 @@ mongoose.connect(uri)
 
 // Middleware for JSON data handling
 app.use(express.json());
+
+const registerRoute = require('./register');
+app.use(registerRoute);
+
+const loginRoute = require('./login');
+app.use(loginRoute);
+
 
 // Serve static files from the "frontend" folder
 app.use(express.static(path.join(__dirname, '../frontend')));

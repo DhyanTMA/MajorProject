@@ -46,28 +46,27 @@
                 <h1>Create Account</h1>
                 <p>Join Lumina Flow today</p>
             </div>
-            <form>
+            
+            <form id="registration-form">
                 <div class="form-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" class="form-input" placeholder="Full name" required>
+                    <input type="text" class="form-input" name="fullName" placeholder="Full name" required>
                 </div>
                 <div class="form-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" class="form-input" placeholder="Email address" required>
+                    <input type="email" class="form-input" name="email" placeholder="Email address" required>
                 </div>
                 <div class="form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" class="form-input" placeholder="Password" required>
+                    <input type="password" class="form-input" name="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" class="form-input" placeholder="Confirm password" required>
-                </div>
-                <div class="terms-privacy">
-                    By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    <input type="password" class="form-input" name="confirmPassword" placeholder="Confirm password" required>
                 </div>
                 <button type="submit" class="register-button">Create Account</button>
             </form>
+
             <div class="login-link">
                 Already have an account? <a href="login.html">Sign in</a>
             </div>
@@ -75,61 +74,42 @@
     </div>
 
 
-<div id="termsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Terms & Conditions</h2>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <h3>1. Acceptance of Terms</h3>
-            <p>By accessing and using LuminaFlow's services, you agree to be bound by these Terms and Conditions.</p>
-            
-            <h3>2. Service Description</h3>
-            <p>LuminaFlow provides financial management tools and services for businesses. We reserve the right to modify or discontinue any service with or without notice.</p>
-            
-            <h3>3. User Obligations</h3>
-            <p>You agree to provide accurate information and maintain the security of your account credentials.</p>
-            
-            <h3>4. Data Usage</h3>
-            <p>We process your data in accordance with our Privacy Policy and applicable data protection laws.</p>
-            
-            <h3>5. Service Availability</h3>
-            <p>While we strive for 99.9% uptime, we do not guarantee uninterrupted access to our services.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary modal-close-btn">I Understand</button>
-        </div>
-    </div>
-</div>
 
-<div id="privacyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Privacy Policy</h2>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <h3>1. Information Collection</h3>
-            <p>We collect information that you provide directly to us, including personal and financial data necessary for our services.</p>
-            
-            <h3>2. Data Protection</h3>
-            <p>We implement industry-standard security measures to protect your data from unauthorized access.</p>
-            
-            <h3>3. Information Usage</h3>
-            <p>Your data is used to provide and improve our services, and is never sold to third parties.</p>
-            
-            <h3>4. Cookies</h3>
-            <p>We use cookies to enhance your experience and analyze service usage.</p>
-            
-            <h3>5. Your Rights</h3>
-            <p>You have the right to access, correct, or delete your personal information at any time.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary modal-close-btn">I Understand</button>
-        </div>
-    </div>
-</div>
+<script>
+document.getElementById("registration-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const fullName = this.fullName.value.trim();
+    const email = this.email.value.trim();
+    const password = this.password.value;
+    const confirmPassword = this.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    try {
+        const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fullName, email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            alert("✅ Registration successful!");
+            window.location.href = "login.html"; // or dashboard
+        } else {
+            alert("❌ " + (data.message || "Registration failed."));
+        }
+    } catch (err) {
+        alert("❌ Server error. Please try again.");
+        console.error(err);
+    }
+});
+</script>
 
 </body>
 </html>
