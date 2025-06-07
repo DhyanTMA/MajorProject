@@ -269,10 +269,6 @@ body {
     padding-top: 3px;
 }
 
-.dark-mode .cta-wrapper {
-    background-color: #172554;
-}
-
 .cta-content {
     position: relative;
     height: 100%;
@@ -314,10 +310,6 @@ body {
     overflow: hidden;
     height: 400px;
     background-color: #1e40af
-}
-
-.dark-mode .right-content {
-    background-color: #172554;
 }
 
 .cta-text-inner {

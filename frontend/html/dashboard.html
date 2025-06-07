@@ -10,14 +10,30 @@
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body class="light-mode">
+    <script>
+    async function checkDashboardAuth() {
+        try {
+        const res = await fetch('/api/checkAuth');
+        if (!res.ok) {
+            window.location.href = '/login.html';
+        }
+        } catch (err) {
+        window.location.href = '/login.html';
+        }
+    }
+
+    checkDashboardAuth();
+    </script>
+
+
     <nav class="navbar">
         <div class="nav-container common-nav-spacing">
             <a href="/" class="nav-logo text-primary-color">Lumina Flow</a>
             <div class="nav-links flex gap-2.5">
-                <a href="dashboard.html" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
+                <a href="/dashboard" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
                 <a href="#" class="nav-link text-gray-600 dark:text-gray-400">Reports</a>
-                <a href="#" class="nav-link text-gray-600 dark:text-gray-400">Settings</a>
-                <a href="/" class="btn btn-secondary">Logout</a>
+                <a href="/profile" class="nav-link text-gray-600 dark:text-gray-400">Profile</a>
+                <a href="/" class="btn btn-secondary" id="logout-button">Logout</a>
             </div>
             <div class="mobile-menu-btn">
                 <span></span>
@@ -215,5 +231,6 @@
     </main>
 
     <script src="../javascript/script.js"></script>
+
 </body>
 </html>

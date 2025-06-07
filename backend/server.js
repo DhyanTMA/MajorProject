@@ -1,48 +1,70 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-
+const session = require('express-session');  
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// MongoDB Connection
 const uri = "mongodb://localhost:27017/Accounts"; 
-
 mongoose.connect(uri)
     .then(() => console.log("✅ Connected to Local MongoDB"))
     .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Middleware for JSON data handling
 app.use(express.json());
+app.use(session({
+    secret: 'strongpassword123',  
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }  
+}));
 
 const registerRoute = require('./register');
-app.use(registerRoute);
-
 const loginRoute = require('./login');
+const profileRoute = require('./profile'); 
+
+app.use(registerRoute);
 app.use(loginRoute);
+app.use(profileRoute); 
 
-
-// Serve static files from the "frontend" folder
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// **Serve Homepage Automatically**
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
 });
 
-// **Serve Other HTML Files**
-app.get('/:page', (req, res) => {
-    const page = req.params.page;
-    
-    if (!page.endsWith('.html')) {
-        return res.status(404).send('Page not found');
+app.get('/dashboard.html', (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login.html');
     }
-
-    const filePath = path.join(__dirname, '../frontend/html', page);
-    res.sendFile(filePath);
+    res.sendFile(path.join(__dirname, '../frontend/html/dashboard.html'));
 });
 
-// 🚀 Start Express Server
+app.get('/profile', (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    res.sendFile(path.join(__dirname, '../frontend/html/profile.html'))
+})
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/html/login.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/html/registration.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    res.sendFile(path.join(__dirname, '../frontend/html/dashboard.html'));
+});
+
+app.get('/login.html', (req, res) => res.redirect('/login'));
+app.get('/registration.html', (req, res) => res.redirect('/register'));
+app.get('/dashboard.html', (req, res) => res.redirect('/dashboard'));
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

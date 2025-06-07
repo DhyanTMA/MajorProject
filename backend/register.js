@@ -5,14 +5,12 @@ const User = require('./models/User');
 const mongoose = require('mongoose');
 
 
-// Schema for user
 const userSchema = new mongoose.Schema({
     fullName: String,
     email: { type: String, unique: true },
     password: String
 });
 
-// Register Endpoint
 router.post('/api/register', async (req, res) => {
     const { fullName, email, password } = req.body;
 

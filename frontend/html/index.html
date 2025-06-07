@@ -12,9 +12,9 @@
     <nav class="navbar">
         <div class="nav-container common-nav-spacing">
             <a href="/" class="nav-logo text-primary-color">Lumina Flow</a>            <div class="nav-links flex gap-2.5">
-                <a href="/#features" class="nav-link text-gray-600 dark:text-gray-400">Features</a>
-                <a href="/#pricing" class="nav-link text-gray-600 dark:text-gray-400">Pricing</a>
-                <a href="dashboard.html" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
+                <a href="/features" class="nav-link text-gray-600 dark:text-gray-400">Features</a>
+                <a href="/pricing" class="nav-link text-gray-600 dark:text-gray-400">Pricing</a>
+                <a href="/dashboard" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
                 <a href="login.html" class="btn btn-primary">Login</a>
             </div>
             <div class="mobile-menu-btn">
@@ -35,7 +35,7 @@
                     <p>Streamline your financial operations, track expenses, and make informed decisions with our comprehensive finance management platform.</p>
                     <div class="hero-buttons">
                         <a href="registration.html" id="register-btn" class="btn btn-primary">Get Started</a>
-                        <a href="#pricing" class="btn btn-secondary">Pricing</a>
+                        <a href="/pricing" class="btn btn-secondary">Pricing</a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -83,7 +83,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
     <section class="cta-wrapper">
         <div class="cta-content">
             <div class="content-wrapper">
@@ -104,7 +103,6 @@
         </div>
     </section>
 
-
     <section class="pricing" id="pricing">
         <div class="container">
             <div class="section-header">
@@ -124,7 +122,7 @@
                 </div>
                 <div class="pricing-card">
                     <h3>Plus</h3>
-                    <p class="price">$2/month</p>
+                    <p class="price">Free</p>
                     <ul>
                         <li>Advanced Expense Tracking</li>
                         <li>Detailed Financial Reports</li>
@@ -135,7 +133,7 @@
                 </div>
                 <div class="pricing-card">
                     <h3>Advanced</h3>
-                    <p class="price">$7/month</p>
+                    <p class="price">Free</p>
                     <ul>
                         <li>All Features of Plus</li>
                         <li>Custom Financial Reports</li>
@@ -148,7 +146,36 @@
         </div>
     </section>    
 
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+            const response = await fetch('/api/checkAuth');
+            const data = await response.json();
 
-    
+            if (data.loggedIn) {
+                const navLinks = document.querySelector(".nav-links");
+
+                const loginBtn = navLinks.querySelector("a[href='login.html']");
+                if (loginBtn) {
+                loginBtn.textContent = "Logout";
+                loginBtn.href = "#";
+                loginBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    await fetch('/api/logout', { method: 'POST' });
+                    window.location.href = '/';
+                });
+                }
+
+                const welcomeSpan = document.createElement('span');
+                welcomeSpan.textContent = `Welcome, ${data.userName}`;
+                welcomeSpan.classList.add('text-gray-700', 'dark:text-gray-300', 'ml-4');
+                navLinks.appendChild(welcomeSpan);
+            }
+            } catch (err) {
+            console.error('Auth check failed', err);
+            }
+        });
+    </script>
+
 </body>
 </html>

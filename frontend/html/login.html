@@ -15,7 +15,7 @@
             <div class="nav-links">
                 <a href="/#features" class="nav-link">Features</a>
                 <a href="/#pricing" class="nav-link">Pricing</a>
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
                 <a href="login.html" class="btn btn-primary">Login</a>
             </div>
             <div class="mobile-menu-btn">
@@ -25,13 +25,14 @@
             </div>
         </div>
     </nav>
-    <script src="../javascript/script.js"></script>
+    
     <div class="page-container">
         <div class="login-container">
             <div class="login-header">
                 <h1>Welcome Back</h1>
                 <p>Sign in to your account</p>
             </div>
+
             <form id="login-form">
                 <div class="form-group">
                     <i class="fas fa-envelope"></i>
@@ -50,39 +51,75 @@
                 </div>
                 <button type="submit" class="login-button">Sign In</button>
             </form>
+
             <div class="signup-link">
                 Don't have an account? <a href="registration.html">Sign up</a>
             </div>
         </div>
     </div>
 
-<script>
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+    <script src="../javascript/script.js"></script>
+    <script>
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/checkAuth');
+                if (response.ok) {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (e) {
+                console.log('User not logged in, showing login form');
+            }
+        }
 
-    const email = e.target.querySelector('input[type="email"]').value;
-    const password = e.target.querySelector('input[type="password"]').value;
+        checkAuth();
 
-    try {
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = e.target.querySelector('input[type="email"]').value;
+            const password = e.target.querySelector('input[type="password"]').value;
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showLoginError(data.message || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginError('Login failed. Please try again later.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
 
-        const data = await response.json();
+        function showLoginError(message) {
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
 
-        if (response.ok) {
-            window.location.href = 'dashboard.html';
-        } else {
-            alert(data.message);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            
+            const form = document.getElementById('login-form');
+            form.insertBefore(errorDiv, form.firstChild);
         }
-    } catch (error) {
-        alert('Login failed. Please try again later.');
-        console.error(error);
-    }
-});
-</script>
-
+    </script>
 </body>
 </html>

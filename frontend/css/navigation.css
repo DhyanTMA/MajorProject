@@ -120,10 +120,6 @@
         transition: background-color var(--transition-speed);
     }
 
-    .dark-mode .nav-links {
-        background-color: var(--bg-primary, #1a202c);
-    }
-
     .nav-links.active {
         display: flex;
     }

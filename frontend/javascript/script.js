@@ -1,6 +1,3 @@
-// script.js - Combined JavaScript functionality
-
-// Add base styles
 const styleSheet = document.createElement('style');
 styleSheet.textContent = `
     body { 
@@ -33,7 +30,6 @@ styleSheet.textContent = `
 document.head.appendChild(styleSheet);
 
 
-// Mobile Menu Management
 function initializeMobileMenu() {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
@@ -62,7 +58,6 @@ function initializeMobileMenu() {
     });
 }
 
-// Form Validation and Authentication
 function initializeForm() {
     const form = document.querySelector('form');
     if (!form) return;
@@ -129,7 +124,7 @@ function validateForm(form) {
 
 async function handleRegistration(form, formData) {
     try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -159,7 +154,7 @@ async function handleRegistration(form, formData) {
 
 async function handleLogin(form, formData) {
     try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -175,9 +170,6 @@ async function handleLogin(form, formData) {
             return;
         }
 
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('userName', data.user.fullName);
-
         showSuccess('Login successful! Redirecting to dashboard...');
         setTimeout(() => {
             window.location.href = '/dashboard.html';
@@ -189,7 +181,6 @@ async function handleLogin(form, formData) {
     }
 }
 
-// Modal Management
 function initializeModals() {
     const termsLink = document.querySelector('a[href="#"]');
     const privacyLink = termsLink?.nextElementSibling;
@@ -197,7 +188,6 @@ function initializeModals() {
     setupModal('termsModal', termsLink);
     setupModal('privacyModal', privacyLink);
 
-    // Close modals with Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal.active').forEach(closeModal);
@@ -233,10 +223,51 @@ function closeModal(modal) {
     document.body.style.overflow = '';
 }
 
-// Authentication Status Check
+async function checkAuthStatus() {
+    const currentPage = window.location.pathname;
+    
+    if (currentPage.includes('login.html') || currentPage.includes('registration.html')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/checkAuth');
+        
+        if (currentPage.includes('dashboard.html') && !response.ok) {
+            window.location.href = '/login.html';
+        }
+    } catch (error) {
+        console.error('Auth check error:', error);
+        if (currentPage.includes('dashboard.html')) {
+            window.location.href = '/login.html';
+        }
+    }
+}
 
+async function handleLogout() {
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
 
-// Utility Functions
+        if (response.ok) {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('selectedPlan');
+            
+            window.location.href = '/login.html';
+        } else {
+            console.error('Logout failed');
+            alert('Logout failed. Please try again.');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        alert('An error occurred during logout. Please try again.');
+    }
+}
+
 function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -267,24 +298,31 @@ function showSuccess(message) {
     form.insertBefore(successDiv, form.firstChild);
 }
 
-// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
     initializeMobileMenu();
     initializeForm();
     initializeModals();
 
-    // Recognize selected plan from URL and store it
     const params = new URLSearchParams(window.location.search);
     const selectedPlan = params.get("plan");
 
     if (selectedPlan) {
         localStorage.setItem("selectedPlan", selectedPlan);
 
-        // Update the header content with a "Change Plan" option
-        document.querySelector(".registration-header p").innerHTML =
-            `You are registering for the <strong>${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)}</strong> plan. 
-            <a href="index.html#pricing" class="change-plan-link">Change Plan</a>`;
+        const registrationHeader = document.querySelector(".registration-header p");
+        if (registrationHeader) {
+            registrationHeader.innerHTML =
+                `You are registering for the <strong>${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)}</strong> plan. 
+                <a href="index.html#pricing" class="change-plan-link">Change Plan</a>`;
+        }
+    }
+
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await handleLogout();
+        });
     }
 });
-

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - LuminaFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body class="light-mode">
+    <script>
+    async function checkProfileAuth() {
+        try {
+            const res = await fetch('/api/checkAuth');
+            if (!res.ok) {
+                window.location.href = '/login.html';
+            }
+        } catch (err) {
+            window.location.href = '/login.html';
+        }
+    }
+
+    checkProfileAuth();
+    </script>
+
+    <nav class="navbar">
+        <div class="nav-container common-nav-spacing">
+            <a href="/" class="nav-logo text-primary-color">Lumina Flow</a>
+            <div class="nav-links flex gap-2.5">
+                <a href="/dashboard" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
+                <a href="#" class="nav-link text-gray-600 dark:text-gray-400">Reports</a>
+                <a href="/profile" class="nav-link text-gray-600 dark:text-gray-400">Profile</a>
+                <a href="/" class="btn btn-secondary" id="logout-button">Logout</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-main">
+        <div class="container">
+            <div class="profile-header">
+                <div class="header-content">
+                    <h1>Profile Settings</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+            </div>
+
+            <div class="profile-grid">
+                <div class="profile-card profile-overview">
+                    <div class="profile-info">
+                        <h2 id="profile-name">Loading...</h2>
+                        <p class="profile-email" id="profile-email">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <button class="edit-btn" data-section="personal">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" value="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="" readonly placeholder="Not provided">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" value="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="occupation">Occupation</label>
+                            <input type="text" id="occupation" value="" readonly placeholder="Not provided">
+                        </div>
+                    </div>
+                    <div class="form-actions" style="display: none;">
+                        <button class="btn btn-primary save-btn" data-section="personal">Save Changes</button>
+                        <button class="btn btn-secondary cancel-btn" data-section="personal">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-map-marker-alt"></i> Address Information</h3>
+                        <button class="edit-btn" data-section="address">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="street">Street Address</label>
+                            <input type="text" id="street" value="" readonly placeholder="Not provided">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" value="" readonly placeholder="Not provided">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State/Province</label>
+                            <input type="text" id="state" value="" readonly placeholder="Not provided">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP/Postal Code</label>
+                            <input type="text" id="zipCode" value="" readonly placeholder="Not provided">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" value="" readonly placeholder="Not provided">
+                        </div>
+                    </div>
+                    <div class="form-actions" style="display: none;">
+                        <button class="btn btn-primary save-btn" data-section="address">Save Changes</button>
+                        <button class="btn btn-secondary cancel-btn" data-section="address">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="profile-card danger-zone">
+                    <div class="card-header">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                    </div>
+                    <div class="danger-content">
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h4>Change Password</h4>
+                                <p>Update your account password</p>
+                            </div>
+                            <button class="btn btn-outline" id="change-password-btn">Change Password</button>
+                        </div>
+                        <div class="danger-item">
+                            <div class="danger-info">
+                                <h4>Delete Account</h4>
+                                <p>Permanently delete your account and all data</p>
+                            </div>
+                            <button class="btn btn-danger">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="password-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <span class="close-modal" data-modal="password-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="save-password-btn">Change Password</button>
+                <button class="btn btn-secondary" id="cancel-password-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        let originalData = {};
+        let currentUserData = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const saveButtons = document.querySelectorAll('.save-btn');
+            const cancelButtons = document.querySelectorAll('.cancel-btn');
+
+            editButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    const card = this.closest('.profile-card');
+                    const inputs = card.querySelectorAll('input:not([type="email"])');
+                    const actions = card.querySelector('.form-actions');
+                    
+                    inputs.forEach(input => {
+                        originalData[input.id] = input.value;
+                    });
+                    
+                    inputs.forEach(input => input.removeAttribute('readonly'));
+                    this.style.display = 'none';
+                    actions.style.display = 'flex';
+                });
+            });
+
+            saveButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    saveProfileData(section);
+                });
+            });
+
+            cancelButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    cancelEdit(section);
+                });
+            });
+
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            const passwordModal = document.getElementById('password-modal');
+            const savePasswordBtn = document.getElementById('save-password-btn');
+            const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+
+            if (changePasswordBtn && passwordModal) {
+                changePasswordBtn.addEventListener('click', () => {
+                    passwordModal.style.display = 'flex';
+                });
+            }
+
+            if (savePasswordBtn) {
+                savePasswordBtn.addEventListener('click', changePassword);
+            }
+
+            if (cancelPasswordBtn && passwordModal) {
+                cancelPasswordBtn.addEventListener('click', () => {
+                    closeModal('password-modal');
+                    clearPasswordFields();
+                });
+            }
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('close-modal')) {
+                    const modalId = e.target.dataset.modal;
+                    if (modalId) {
+                        closeModal(modalId);
+                        if (modalId === 'password-modal') {
+                            clearPasswordFields();
+                        }
+                    }
+                }
+                
+                if (e.target.classList.contains('modal')) {
+                    const modalId = e.target.id;
+                    closeModal(modalId);
+                    if (modalId === 'password-modal') {
+                        clearPasswordFields();
+                    }
+                }
+            });
+        });
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        async function loadProfileData() {
+            try {
+                const response = await fetch('/api/profile');
+                if (!response.ok) {
+                    throw new Error('Failed to load profile data');
+                }
+
+                const data = await response.json();
+                currentUserData = data;
+
+                document.getElementById('profile-name').textContent = data.fullName;
+                document.getElementById('profile-email').textContent = data.email;
+
+                document.getElementById('fullName').value = data.fullName || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
+                document.getElementById('dateOfBirth').value = data.dateOfBirth ? data.dateOfBirth.split('T')[0] : '';
+                document.getElementById('occupation').value = data.occupation || '';
+                document.getElementById('street').value = data.street || '';
+                document.getElementById('city').value = data.city || '';
+                document.getElementById('state').value = data.state || '';
+                document.getElementById('zipCode').value = data.zipCode || '';
+                document.getElementById('country').value = data.country || '';
+
+                checkMissingData(data);
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showAlert('Error loading profile data', 'error');
+            }
+        }
+
+        function checkMissingData(data) {
+            const missingFields = [];
+            if (!data.phone) missingFields.push('Phone Number');
+            if (!data.dateOfBirth) missingFields.push('Date of Birth');
+            if (!data.occupation) missingFields.push('Occupation');
+            if (!data.street) missingFields.push('Street Address');
+            if (!data.city) missingFields.push('City');
+            if (!data.state) missingFields.push('State/Province');
+            if (!data.zipCode) missingFields.push('ZIP/Postal Code');
+            if (!data.country) missingFields.push('Country');
+
+            if (missingFields.length > 0) {
+                const message = `The following information is missing from your profile: ${missingFields.join(', ')}. You can update this information by clicking the Edit button in each section.`;
+                document.getElementById('missing-data-message').textContent = message;
+                document.getElementById('data-alert-modal').style.display = 'flex';
+            }
+        }
+
+        async function saveProfileData(section) {
+            try {
+                const profileData = {
+                    fullName: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    dateOfBirth: document.getElementById('dateOfBirth').value,
+                    occupation: document.getElementById('occupation').value,
+                    street: document.getElementById('street').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zipCode: document.getElementById('zipCode').value,
+                    country: document.getElementById('country').value
+                };
+
+                const response = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('profile-name').textContent = profileData.fullName;
+                    
+                    showAlert('Profile updated successfully', 'success');
+                    finishEdit(section);
+                } else {
+                    showAlert(result.message || 'Error updating profile', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showAlert('Error updating profile', 'error');
+            }
+        }
+
+        function cancelEdit(section) {
+            const editBtn = document.querySelector(`[data-section="${section}"].edit-btn`);
+            const card = editBtn.closest('.profile-card');
+            const inputs = card.querySelectorAll('input:not([type="email"])');
+            
+            inputs.forEach(input => {
+                if (originalData[input.id] !== undefined) {
+                    input.value = originalData[input.id];
+                }
+            });
+
+            finishEdit(section);
+        }
+
+        function finishEdit(section) {
+            const editBtn = document.querySelector(`[data-section="${section}"].edit-btn`);
+            const card = editBtn.closest('.profile-card');
+            const inputs = card.querySelectorAll('input:not([type="email"])');
+            const actions = card.querySelector('.form-actions');
+            
+            inputs.forEach(input => input.setAttribute('readonly', true));
+            actions.style.display = 'none';
+            editBtn.style.display = 'flex';
+        }
+
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showAlert('All password fields are required', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showAlert('New passwords do not match', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showAlert('New password must be at least 6 characters long', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/change-password', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showAlert('Password changed successfully', 'success');
+                    closeModal('password-modal');
+                    clearPasswordFields();
+                } else {
+                    showAlert(result.message || 'Error changing password', 'error');
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                showAlert('Error changing password', 'error');
+            }
+        }
+
+        function clearPasswordFields() {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: bold;
+                z-index: 1001;
+                max-width: 300px;
+                background-color: ${type === 'success' ? '#28a745' : '#dc3545'};
+            `;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (document.body.contains(alertDiv)) {
+                    document.body.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+    </script>
+    <script src="../javascript/script.js"></script>
+</body>
+</html>
