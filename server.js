@@ -18,7 +18,7 @@ app.use(session({
     cookie: { secure: false }  
 }));
 
-const registerRoute = require('Routes/register');
+const registerRoute = require('./Routes/register');
 const loginRoute = require('./Routes/login');  
 const profileRoute = require('./Routes/profile');
 
