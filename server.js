@@ -5,7 +5,7 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const uri = "mongodb://localhost:27017/Accounts"; 
+const uri = "mongodb+srv://dhyanmarasinghearachchige:zKkhUUZjW2ULWThj@cluster0.caeovg9.mongodb.net/Accounts"; 
 mongoose.connect(uri)
     .then(() => console.log("✅ Connected to Local MongoDB"))
     .catch((err) => console.error("❌ MongoDB connection error:", err));
