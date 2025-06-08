@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - LuminaFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/registrationscript.css">
+</head>
+<body class="light-mode">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Lumina Flow</a>
+            <div class="nav-links">
+                <a href="/features" class="nav-link">Features</a>
+                <a href="/pricing" class="nav-link">Pricing</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="login.html" class="btn btn-primary">Login</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="registration-container">
+            <div class="registration-header">
+                <h1>Create Account</h1>
+                <p id="header-text">Join Lumina Flow today</p>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step active" id="step-1">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Account Info</div>
+                </div>
+                <div class="step" id="step-2">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Personal Details</div>
+                </div>
+            </div>
+            
+            <form id="registration-form">
+                <div class="form-step active" id="form-step-1">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-input" name="fullName" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-input" name="email" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-input" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-input" name="confirmPassword" placeholder="Confirm password" required>
+                    </div>
+                    <button type="button" class="register-button" id="next-step">Next</button>
+                </div>
+
+                <div class="form-step" id="form-step-2">
+                    <div class="form-group">
+                        <i class="fas fa-phone"></i>
+                            <label for="phone" style="font-size: 12px; color: #666; margin-bottom: 4px; display: block;">
+                                Phone number (include +61)
+                            </label>
+                            <i class="fas fa-phone"></i>
+                            <input type="text" class="form-input" name="phone" id="phone" pattern="^\+61\d{9}$" placeholder="Phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-calendar"></i>
+                        <input type="date" class="form-input" name="dateOfBirth" required>
+                        <label for="dateOfBirth" style="font-size: 12px; color: #666; margin-top: 5px;">Date of Birth</label>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-briefcase"></i>
+                        <input type="text" class="form-input" name="occupation" placeholder="Occupation" required>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px 0; color: #333; font-size: 18px;">Address Information</h3>
+                    
+                    <div class="form-group">
+                        <i class="fas fa-home"></i>
+                        <input type="text" class="form-input" name="street" placeholder="Street address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <i class="fas fa-city"></i>
+                            <input type="text" class="form-input" name="city" placeholder="City" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-map"></i>
+                            <input type="text" class="form-input" name="state" placeholder="State" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <i class="fas fa-mail-bulk"></i>
+                            <input type="text" class="form-input" name="zipCode" placeholder="Zip Code" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-globe"></i>
+                            <select class="form-input" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="Australia">Australia</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Germany">Germany</option>
+                                <option value="France">France</option>
+                                <option value="Japan">Japan</option>
+                                <option value="China">China</option>
+                                <option value="India">India</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn-secondary" id="prev-step">Previous</button>
+                        <button type="submit" class="register-button">Create Account</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../javascript/script.js"></script>
+    <script>
+        // Check if user is already authenticated - redirect to dashboard if so
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/checkAuth');
+                if (response.ok) {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (e) {
+                console.log('User not logged in, showing registration form');
+            }
+        }
+
+        // Run auth check when page loads
+        checkAuth();
+
+        const params = new URLSearchParams(window.location.search);
+        const selectedPlan = params.get("plan");
+
+        if (selectedPlan) {
+            document.getElementById("header-text").textContent = 
+                `You are registering for the ${selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} plan`;
+        }
+
+        const nextBtn = document.getElementById('next-step');
+        const prevBtn = document.getElementById('prev-step');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const formStep1 = document.getElementById('form-step-1');
+        const formStep2 = document.getElementById('form-step-2');
+
+        nextBtn.addEventListener('click', function() {
+            const fullName = document.querySelector('input[name="fullName"]').value.trim();
+            const email = document.querySelector('input[name="email"]').value.trim();
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
+
+            if (!fullName || !email || !password || !confirmPassword) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            step1.classList.remove('active');
+            step1.classList.add('completed');
+            step2.classList.add('active');
+            formStep1.classList.remove('active');
+            formStep2.classList.add('active');
+        });
+
+        prevBtn.addEventListener('click', function() {
+            step1.classList.add('active');
+            step1.classList.remove('completed');
+            step2.classList.remove('active');
+            formStep1.classList.add('active');
+            formStep2.classList.remove('active');
+        });
+
+        document.getElementById("registration-form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = {
+                fullName: this.fullName.value.trim(),
+                email: this.email.value.trim(),
+                password: this.password.value,
+                phone: this.phone.value.trim().replace(/\s+/g, ''),
+                dateOfBirth: this.dateOfBirth.value,
+                occupation: this.occupation.value.trim(),
+                address: {
+                    street: this.street.value.trim(),
+                    city: this.city.value.trim(),
+                    state: this.state.value.trim(),
+                    zipCode: this.zipCode.value.trim(),
+                    country: this.country.value
+                }
+            };
+
+            if (!formData.phone || !formData.dateOfBirth || !formData.occupation || 
+                !formData.address.street || !formData.address.city || 
+                !formData.address.state || !formData.address.zipCode || !formData.address.country) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            try {
+                const res = await fetch("/api/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert("✅ Registration successful!");
+                    window.location.href = "login.html";
+                } else {
+                    alert("❌ " + (data.message || "Registration failed."));
+                }
+            } catch (err) {
+                alert("❌ Server error. Please try again.");
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
