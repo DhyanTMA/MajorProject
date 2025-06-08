@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LuminaFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/loginscript.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+</head>
+<body class="light-mode">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Lumina Flow</a>
+            <div class="nav-links">
+                <a href="/features" class="nav-link">Features</a>
+                <a href="/pricing" class="nav-link">Pricing</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="login.html" class="btn btn-primary">Login</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="page-container">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to your account</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="form-input" placeholder="Email address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="form-input" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-button">Sign In</button>
+            </form>
+
+            <div class="signup-link">
+                Don't have an account? <a href="registration.html">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../javascript/script.js"></script>
+    <script>
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/checkAuth');
+                if (response.ok) {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (e) {
+                console.log('User not logged in, showing login form');
+            }
+        }
+
+        checkAuth();
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = e.target.querySelector('input[type="email"]').value;
+            const password = e.target.querySelector('input[type="password"]').value;
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showLoginError(data.message || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginError('Login failed. Please try again later.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showLoginError(message) {
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            
+            const form = document.getElementById('login-form');
+            form.insertBefore(errorDiv, form.firstChild);
+        }
+    </script>
+</body>
+</html>

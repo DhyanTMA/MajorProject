@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LuminaFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/navigation.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body class="light-mode">
+    <script>
+    async function checkDashboardAuth() {
+        try {
+        const res = await fetch('/api/checkAuth');
+        if (!res.ok) {
+            window.location.href = '/login.html';
+        }
+        } catch (err) {
+        window.location.href = '/login.html';
+        }
+    }
+
+    checkDashboardAuth();
+    </script>
+
+
+    <nav class="navbar">
+        <div class="nav-container common-nav-spacing">
+            <a href="/" class="nav-logo text-primary-color">Lumina Flow</a>
+            <div class="nav-links flex gap-2.5">
+                <a href="/dashboard" class="nav-link text-gray-600 dark:text-gray-400">Dashboard</a>
+                <a href="#" class="nav-link text-gray-600 dark:text-gray-400">Reports</a>
+                <a href="/profile" class="nav-link text-gray-600 dark:text-gray-400">Profile</a>
+                <a href="/" class="btn btn-secondary" id="logout-button">Logout</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="header-content">
+                    <h1>Financial Dashboard</h1>
+                    <p>Welcome back! Here's your financial overview</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Transaction
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon income">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Income</h3>
+                        <p class="stat-value">$12,847.50</p>
+                        <span class="stat-change positive">+12.5% from last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon expense">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Expenses</h3>
+                        <p class="stat-value">$8,234.20</p>
+                        <span class="stat-change negative">+5.2% from last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon profit">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Net Profit</h3>
+                        <p class="stat-value">$4,613.30</p>
+                        <span class="stat-change positive">+18.7% from last month</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon budget">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Budget Remaining</h3>
+                        <p class="stat-value">$2,156.80</p>
+                        <span class="stat-change neutral">67% of monthly budget</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Recent Transactions</h3>
+                        <a href="#" class="card-link">View All</a>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="transaction-icon income">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Client Payment</h4>
+                                <p>Invoice #1234</p>
+                            </div>
+                            <div class="transaction-amount positive">+$2,500.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon expense">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Office Supplies</h4>
+                                <p>Staples Inc.</p>
+                            </div>
+                            <div class="transaction-amount negative">-$145.32</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon expense">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Software Subscription</h4>
+                                <p>Adobe Creative Suite</p>
+                            </div>
+                            <div class="transaction-amount negative">-$52.99</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-receipt"></i>
+                            <span>Add Expense</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Create Invoice</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Generate Report</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-calculator"></i>
+                            <span>Budget Planner</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Expense Categories</h3>
+                        <a href="#" class="card-link">Manage</a>
+                    </div>
+                    <div class="category-list">
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: #3b82f6;"></div>
+                            <div class="category-details">
+                                <span class="category-name">Office Expenses</span>
+                                <span class="category-amount">$1,245.50</span>
+                            </div>
+                            <div class="category-percentage">32%</div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: #10b981;"></div>
+                            <div class="category-details">
+                                <span class="category-name">Marketing</span>
+                                <span class="category-amount">$892.30</span>
+                            </div>
+                            <div class="category-percentage">23%</div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: #f59e0b;"></div>
+                            <div class="category-details">
+                                <span class="category-name">Travel</span>
+                                <span class="category-amount">$654.20</span>
+                            </div>
+                            <div class="category-percentage">17%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Upcoming Bills</h3>
+                        <a href="#" class="card-link">View All</a>
+                    </div>
+                    <div class="bills-list">
+                        <div class="bill-item">
+                            <div class="bill-info">
+                                <h4>Internet Service</h4>
+                                <p>Due in 3 days</p>
+                            </div>
+                            <div class="bill-amount">$89.99</div>
+                        </div>
+                        <div class="bill-item">
+                            <div class="bill-info">
+                                <h4>Office Rent</h4>
+                                <p>Due in 5 days</p>
+                            </div>
+                            <div class="bill-amount">$1,200.00</div>
+                        </div>
+                        <div class="bill-item">
+                            <div class="bill-info">
+                                <h4>Insurance Premium</h4>
+                                <p>Due in 12 days</p>
+                            </div>
+                            <div class="bill-amount">$345.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../javascript/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch('/api/checkAuth');
+                const data = await response.json();
+
+                if (data.loggedIn) {
+                    const navLinks = document.querySelector(".nav-links");
+                    const welcomeSpan = document.createElement('span');
+                    welcomeSpan.textContent = `Welcome, ${data.userName}`;
+                    welcomeSpan.classList.add('text-gray-700', 'dark:text-gray-300', 'ml-4');
+                    navLinks.appendChild(welcomeSpan);
+                }
+            } catch (err) {
+                console.error('Auth check failed', err);
+            }
+        });
+    </script>
+</body>
+</html>
