@@ -238,39 +238,6 @@
     margin-top: 1rem;
 }
 
-.security-options {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.security-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: var(--gray-50);
-    border-radius: 0.75rem;
-    transition: background-color 0.2s ease;
-}
-
-.security-item:hover {
-    background-color: var(--gray-100);
-}
-
-.security-info h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--gray-900);
-    margin-bottom: 0.25rem;
-}
-
-.security-info p {
-    font-size: 0.875rem;
-    color: var(--gray-600);
-}
-
-.security-select,
 .preference-select {
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--gray-300);
@@ -601,7 +568,6 @@
         flex-direction: column;
     }
     
-    .security-item,
     .preference-item,
     .danger-item {
         flex-direction: column;

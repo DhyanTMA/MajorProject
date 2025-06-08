@@ -159,6 +159,9 @@
                 if (loginBtn) {
                 loginBtn.textContent = "Logout";
                 loginBtn.href = "#";
+                // Apply the same styling as dashboard logout button
+                loginBtn.classList.remove('btn-primary');
+                loginBtn.classList.add('btn-secondary');
                 loginBtn.addEventListener("click", async (e) => {
                     e.preventDefault();
                     await fetch('/api/logout', { method: 'POST' });
@@ -175,7 +178,22 @@
             console.error('Auth check failed', err);
             }
         });
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPath = window.location.pathname;
+            
+            if (currentPath === '/features') {
+                const featuresSection = document.getElementById('features');
+                if (featuresSection) {
+                    featuresSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (currentPath === '/pricing') {
+                const pricingSection = document.getElementById('pricing');
+                if (pricingSection) {
+                    pricingSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
     </script>
-
 </body>
 </html>

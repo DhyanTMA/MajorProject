@@ -32,6 +32,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
 });
 
+app.get('/features', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
+});
+
+app.get('/pricing', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/html/index.html'));
+});
+
 app.get('/dashboard.html', (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/login.html');

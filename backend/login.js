@@ -1,7 +1,8 @@
+// importing libraries and creating new object router
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const User = require('./models/User');  
+const User = require('./models/User');
 
 router.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
@@ -59,7 +60,8 @@ router.post('/api/logout', (req, res) => {
 });
 
 router.get('/api/checkAuth', (req, res) => {
-  console.log('Auth check - Session ID:', req.session.id, 'User ID:', req.session.userId);
+  process.stdout.write('\r\x1b[K'); 
+  process.stdout.write(`Auth check - Session: ${req.session.id?.slice(-8) || 'new'} | User: ${req.session.userId ? 'logged-in' : 'anonymous'}`);
   
   if (req.session.userId) {
     res.status(200).json({ 

@@ -231,6 +231,23 @@
     </main>
 
     <script src="../javascript/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch('/api/checkAuth');
+                const data = await response.json();
 
+                if (data.loggedIn) {
+                    const navLinks = document.querySelector(".nav-links");
+                    const welcomeSpan = document.createElement('span');
+                    welcomeSpan.textContent = `Welcome, ${data.userName}`;
+                    welcomeSpan.classList.add('text-gray-700', 'dark:text-gray-300', 'ml-4');
+                    navLinks.appendChild(welcomeSpan);
+                }
+            } catch (err) {
+                console.error('Auth check failed', err);
+            }
+        });
+    </script>
 </body>
 </html>
