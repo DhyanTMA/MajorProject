@@ -146,7 +146,7 @@
                                 <h4>Delete Account</h4>
                                 <p>Permanently delete your account and all data</p>
                             </div>
-                            <button class="btn btn-danger">Delete Account</button>
+                            <button class="btn btn-danger" id="delete-account-btn">Delete Account</button>
                         </div>
                     </div>
                 </div>
@@ -154,6 +154,7 @@
         </div>
     </main>
 
+    <!-- Password Change Modal -->
     <div id="password-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -177,6 +178,33 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" id="save-password-btn">Change Password</button>
                 <button class="btn btn-secondary" id="cancel-password-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: #dc3545;"><i class="fas fa-exclamation-triangle"></i> Delete Account</h3>
+                <span class="close-modal" id="close-delete-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div style="background-color: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 1rem; margin-bottom: 1rem; border-radius: 0.375rem;">
+                    <strong>Warning:</strong> This action is irreversible. All your data will be permanently deleted.
+                </div>
+                <div class="form-group">
+                    <label for="deletePassword">Enter your password to confirm:</label>
+                    <input type="password" id="deletePassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="deleteConfirmText">Type "DELETE MY ACCOUNT" to confirm:</label>
+                    <input type="text" id="deleteConfirmText" placeholder="DELETE MY ACCOUNT" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="confirm-delete-btn">Delete My Account</button>
+                <button class="btn btn-secondary" id="cancel-delete-btn">Cancel</button>
             </div>
         </div>
     </div>
@@ -219,6 +247,19 @@
             clearPasswordFields();
         }
 
+        function openDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            clearDeleteFields();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
 
@@ -257,10 +298,11 @@
                 });
             });
 
+            // Password Modal Event Listeners
             const changePasswordBtn = document.getElementById('change-password-btn');
             const savePasswordBtn = document.getElementById('save-password-btn');
             const cancelPasswordBtn = document.getElementById('cancel-password-btn');
-            const closePasswordModal = document.getElementById('close-password-modal');
+            const closePasswordModalBtn = document.getElementById('close-password-modal');
 
             changePasswordBtn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -272,22 +314,63 @@
                 changePassword();
             });
 
+            // Fixed: Close password modal after 1 second delay
             cancelPasswordBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closePasswordModal();
+                setTimeout(() => {
+                    closePasswordModal();
+                }, 1000);
             });
 
-            closePasswordModal.addEventListener('click', (e) => {
+            closePasswordModalBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                closePasswordModal();
+                setTimeout(() => {
+                    closePasswordModal();
+                }, 1000);
             });
 
+            // Delete Account Modal Event Listeners
+            const deleteAccountBtn = document.getElementById('delete-account-btn');
+            const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+            const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+            const closeDeleteModalBtn = document.getElementById('close-delete-modal');
+
+            deleteAccountBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDeleteModal();
+            });
+
+            confirmDeleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                deleteAccount();
+            });
+
+            cancelDeleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeDeleteModal();
+            });
+
+            closeDeleteModalBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeDeleteModal();
+            });
+
+            // Modal click outside to close
             document.getElementById('password-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
-                    closePasswordModal();
+                    setTimeout(() => {
+                        closePasswordModal();
+                    }, 1000);
                 }
             });
 
+            document.getElementById('delete-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeDeleteModal();
+                }
+            });
+
+            // Enter key handlers
             document.getElementById('confirmPassword').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -295,11 +378,27 @@
                 }
             });
 
+            document.getElementById('deleteConfirmText').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    deleteAccount();
+                }
+            });
+
+            // Escape key handler
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    const modal = document.getElementById('password-modal');
-                    if (modal.classList.contains('show')) {
-                        closePasswordModal();
+                    const passwordModal = document.getElementById('password-modal');
+                    const deleteModal = document.getElementById('delete-modal');
+                    
+                    if (passwordModal.classList.contains('show')) {
+                        setTimeout(() => {
+                            closePasswordModal();
+                        }, 1000);
+                    }
+                    
+                    if (deleteModal.classList.contains('show')) {
+                        closeDeleteModal();
                     }
                 }
             });
@@ -455,10 +554,67 @@
             }
         }
 
+        async function deleteAccount() {
+            const password = document.getElementById('deletePassword').value;
+            const confirmText = document.getElementById('deleteConfirmText').value;
+
+            clearAlerts();
+
+            if (!password) {
+                showAlert('Password is required', 'error');
+                return;
+            }
+
+            if (!confirmText || confirmText !== 'DELETE MY ACCOUNT') {
+                showAlert('Please type "DELETE MY ACCOUNT" exactly as shown', 'error');
+                return;
+            }
+
+            const deleteBtn = document.getElementById('confirm-delete-btn');
+            const originalText = deleteBtn.textContent;
+            deleteBtn.disabled = true;
+            deleteBtn.textContent = 'Deleting...';
+
+            try {
+                const response = await fetch('/api/delete-account', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        password,
+                        confirmText
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showAlert('Account deleted successfully. Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                } else {
+                    showAlert(result.message || 'Error deleting account', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting account:', error);
+                showAlert('Network error. Please try again.', 'error');
+            } finally {
+                deleteBtn.disabled = false;
+                deleteBtn.textContent = originalText;
+            }
+        }
+
         function clearPasswordFields() {
             document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
+        }
+
+        function clearDeleteFields() {
+            document.getElementById('deletePassword').value = '';
+            document.getElementById('deleteConfirmText').value = '';
         }
 
         function clearAlerts() {

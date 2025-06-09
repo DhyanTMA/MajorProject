@@ -66,12 +66,14 @@ router.put('/api/profile', async (req, res) => {
             updatedAt: new Date()
         };
 
+        // Remove undefined or empty values
         Object.keys(updateData).forEach(key => {
             if (updateData[key] === undefined || updateData[key] === '') {
                 delete updateData[key];
             }
         });
 
+        // Handle address object
         if (updateData.address) {
             const addressFields = Object.values(updateData.address).filter(val => val && val !== '');
             if (addressFields.length === 0) {
@@ -156,6 +158,58 @@ router.put('/api/change-password', async (req, res) => {
     } catch (error) {
         console.error('Password change error:', error);
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.delete('/api/delete-account', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    const { password, confirmText } = req.body;
+
+    if (!password) {
+        return res.status(400).json({ message: 'Password is required to delete account' });
+    }
+
+    // Fixed: Check for exact match with case sensitivity
+    if (!confirmText || confirmText !== 'DELETE MY ACCOUNT') {
+        return res.status(400).json({ message: 'Please type "DELETE MY ACCOUNT" exactly as shown to confirm account deletion' });
+    }
+
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(400).json({ message: 'Password is incorrect' });
+        }
+
+        // Delete the user from the database
+        const deletedUser = await User.findByIdAndDelete(req.session.userId);
+        
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found or already deleted' });
+        }
+
+        // Destroy the session
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Session destruction error:', err);
+                return res.status(500).json({ message: 'Account deleted but session cleanup failed' });
+            }
+            
+            // Clear the session cookie
+            res.clearCookie('connect.sid'); // Adjust cookie name if different
+            res.status(200).json({ message: 'Account deleted successfully' });
+        });
+
+    } catch (error) {
+        console.error('Account deletion error:', error);
+        res.status(500).json({ message: 'Server error occurred while deleting account' });
     }
 });
 
