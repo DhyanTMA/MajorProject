@@ -5,9 +5,9 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const uri = "mongodb+srv://dhyanmarasinghearachchige:zKkhUUZjW2ULWThj@cluster0.caeovg9.mongodb.net/Accounts";
+const uri = "mongodb+srv://dhyanmarasinghearachchige:zKkhUUZjW2ULWThj@cluster0.caeovg9.mongodb.net/Database";
 mongoose.connect(uri)
-    .then(() => console.log("✅ Connected to Local MongoDB"))
+    .then(() => console.log("✅ Connected to Cloud MongoDB"))
     .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 app.use(express.json());
@@ -21,7 +21,9 @@ app.use(session({
 const registerRoute = require('./Routes/register');
 const loginRoute = require('./Routes/login');  
 const profileRoute = require('./Routes/profile');
+const dashboardRoute = require('./Routes/dashboard');
 
+app.use('/api', dashboardRoute);
 app.use(registerRoute);
 app.use(loginRoute);
 app.use(profileRoute); 

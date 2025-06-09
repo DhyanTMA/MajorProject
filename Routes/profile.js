@@ -66,14 +66,12 @@ router.put('/api/profile', async (req, res) => {
             updatedAt: new Date()
         };
 
-        // Remove undefined or empty values
         Object.keys(updateData).forEach(key => {
             if (updateData[key] === undefined || updateData[key] === '') {
                 delete updateData[key];
             }
         });
 
-        // Handle address object
         if (updateData.address) {
             const addressFields = Object.values(updateData.address).filter(val => val && val !== '');
             if (addressFields.length === 0) {
@@ -172,7 +170,6 @@ router.delete('/api/delete-account', async (req, res) => {
         return res.status(400).json({ message: 'Password is required to delete account' });
     }
 
-    // Fixed: Check for exact match with case sensitivity
     if (!confirmText || confirmText !== 'DELETE MY ACCOUNT') {
         return res.status(400).json({ message: 'Please type "DELETE MY ACCOUNT" exactly as shown to confirm account deletion' });
     }
@@ -188,22 +185,19 @@ router.delete('/api/delete-account', async (req, res) => {
             return res.status(400).json({ message: 'Password is incorrect' });
         }
 
-        // Delete the user from the database
         const deletedUser = await User.findByIdAndDelete(req.session.userId);
         
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found or already deleted' });
         }
 
-        // Destroy the session
         req.session.destroy((err) => {
             if (err) {
                 console.error('Session destruction error:', err);
                 return res.status(500).json({ message: 'Account deleted but session cleanup failed' });
             }
             
-            // Clear the session cookie
-            res.clearCookie('connect.sid'); // Adjust cookie name if different
+            res.clearCookie('connect.sid'); 
             res.status(200).json({ message: 'Account deleted successfully' });
         });
 
